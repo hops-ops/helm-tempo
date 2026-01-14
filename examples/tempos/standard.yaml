@@ -1,0 +1,17 @@
+apiVersion: helm.hops.ops.com.ai/v1alpha1
+kind: Tempo
+metadata:
+  name: tempo
+  namespace: example-env
+spec:
+  clusterName: example-cluster
+  labels:
+    team: platform
+    environment: production
+  providerConfigRef:
+    name: example-cluster
+    kind: ProviderConfig
+  values:
+    persistence:
+      enabled: true
+      size: 10Gi
