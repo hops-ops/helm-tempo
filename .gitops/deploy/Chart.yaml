@@ -2,4 +2,4 @@ apiVersion: v2
 name: helm-tempo
 version: 0.0.0
 description: GitOps packaging for the Tempo Crossplane configuration
-appVersion: 1.24.3
+appVersion: 1.24.4
