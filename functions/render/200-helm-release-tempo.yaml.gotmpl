@@ -32,8 +32,6 @@ spec:
       {{- toYaml $t.overrideAllValues | nindent 6 }}
     {{- else }}
     values:
-      fullnameOverride: tempo
-      nameOverride: tempo
       tempo:
         # Enable all trace receivers for maximum compatibility
         receivers:
