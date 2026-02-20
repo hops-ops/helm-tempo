@@ -1,13 +1,6 @@
 # code: language=yaml
 #
 # Helm release for tempo
-#
-# Integration defaults:
-# - OTLP receivers enabled for OpenTelemetry (gRPC:4317, HTTP:4318)
-# - Jaeger receivers enabled for Kiali compatibility (gRPC:14250, Thrift:6831/6832, HTTP:14268)
-# - Zipkin receiver enabled for broad compatibility (9411)
-# - Metrics generator for Prometheus integration
-#
 
 {{- $t := $state.tempo }}
 
@@ -30,41 +23,9 @@ spec:
     {{- if $t.overrideAllValues }}
     values:
       {{- toYaml $t.overrideAllValues | nindent 6 }}
-    {{- else }}
+    {{- else if $t.values }}
     values:
-      tempo:
-        # Enable all trace receivers for maximum compatibility
-        receivers:
-          otlp:
-            protocols:
-              grpc:
-                endpoint: "0.0.0.0:4317"
-              http:
-                endpoint: "0.0.0.0:4318"
-          jaeger:
-            protocols:
-              grpc:
-                endpoint: "0.0.0.0:14250"
-              thrift_binary:
-                endpoint: "0.0.0.0:6832"
-              thrift_compact:
-                endpoint: "0.0.0.0:6831"
-              thrift_http:
-                endpoint: "0.0.0.0:14268"
-          zipkin:
-            endpoint: "0.0.0.0:9411"
-        # Enable metrics generation for service graphs in Grafana
-        metricsGenerator:
-          enabled: true
-          remoteWriteUrl: "http://kube-prometheus-stack-prometheus.{{ $t.namespace }}:9090/api/v1/write"
-        # Enable search for trace queries
-        searchEnabled: true
-      # Expose all receiver ports
-      service:
-        type: ClusterIP
-      {{- if $t.values }}
       {{- toYaml $t.values | nindent 6 }}
-      {{- end }}
     {{- end }}
   rollbackLimit: 3
   providerConfigRef:
