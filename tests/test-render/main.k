@@ -33,6 +33,26 @@ _items = [
                     apiVersion = "helm.m.crossplane.io/v1beta1"
                     kind = "Release"
                     metadata.name = "test-tempo"
+                    spec.forProvider.values = {
+                        tempo = {
+                            searchEnabled = True
+                            receivers = {
+                                otlp = {
+                                    protocols = {
+                                        grpc = {
+                                            endpoint = "0.0.0.0:4317"
+                                        }
+                                        http = {
+                                            endpoint = "0.0.0.0:4318"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        service = {
+                            type = "ClusterIP"
+                        }
+                    }
                 }
             ]
         }

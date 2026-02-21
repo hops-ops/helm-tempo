@@ -23,9 +23,34 @@ spec:
     {{- if $t.overrideAllValues }}
     values:
       {{- toYaml $t.overrideAllValues | nindent 6 }}
-    {{- else if $t.values }}
+    {{- else }}
     values:
+      tempo:
+        receivers:
+          otlp:
+            protocols:
+              grpc:
+                endpoint: "0.0.0.0:4317"
+              http:
+                endpoint: "0.0.0.0:4318"
+          jaeger:
+            protocols:
+              grpc:
+                endpoint: "0.0.0.0:14250"
+              thrift_binary:
+                endpoint: "0.0.0.0:6832"
+              thrift_compact:
+                endpoint: "0.0.0.0:6831"
+              thrift_http:
+                endpoint: "0.0.0.0:14268"
+          zipkin:
+            endpoint: "0.0.0.0:9411"
+        searchEnabled: true
+      service:
+        type: ClusterIP
+      {{- if $t.values }}
       {{- toYaml $t.values | nindent 6 }}
+      {{- end }}
     {{- end }}
   rollbackLimit: 3
   providerConfigRef:
